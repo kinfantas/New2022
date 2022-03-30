@@ -1,0 +1,83 @@
+'''
+Procedimiento de sorteo:
+ 1. Cada vez que se complete la lotería, se le preguntará si desea continuar con la lotería y solo ingrese "Sí" para continuar la lotería.
+ 2. Lógica de lotería:
+         (1) Producir números enteros de 0 a 100 y construir una lista 
+         (2) Construya tres listas, que son los números ganadores del primer premio, segundo premio y tercer premio.
+         (3) Genere un número aleatorio cada vez y luego vea si está en el número ganador. Si es así, imprima una oración:
+                 "Felicitaciones, ganó el primer premio por {} ª vez. El número ganador es: {}"; el número ganador no se sorteará la próxima vez
+    
+         Cada persona puede dibujar tres veces. Una vez completado el sorteo, imprima los números ganadores de los premios 1/2/3 respectivamente, y luego espere el siguiente sorteo.
+'''
+
+import random
+
+def lottery():
+    # Generar lista de lotería
+    # Use set, el primer, segundo y tercer premio no se pueden repetir
+    number = [] # Números ganadores en total 18
+    First_prize = [] # Primer premio suponga que hay 10 números ganadores para el primer premio
+    Second_prize = [] # Segundo premio Suponiendo que hay 15 números ganadores para el segundo premio
+    Thire_prize = [] # Tercer premio Suponga que hay 20 números ganadores para el tercer premio
+
+    # número de premio
+    while len(set(number)) < 45:
+        number.append(random.randint(0,100))
+        number = list(set(number))
+
+    # Asignar números ganadores al primer, segundo y tercer premio
+    while True:
+        if len(First_prize) < 10:
+            First_prize.append(number.pop())
+        elif len(Second_prize) < 15:
+            Second_prize.append(number.pop())
+        elif len(Thire_prize) < 20:
+            Thire_prize.append(number.pop())
+        if len(First_prize) == 10 and len(Second_prize) == 15 and len(Thire_prize) == 20:
+            break
+
+    return First_prize,Second_prize,Thire_prize
+
+def main():
+    # Imprimir lotería
+    i = 0 # Tres oportunidades para todos
+    first_count = 0 # Número de premios ganados
+    second_count = 0 # Gana el segundo premio
+    third_count = 0 # Tiempos ganadores del tercer premio
+    first = [] # Lista de ganadores del primer premio
+    second = [] # Lista de ganadores del segundo premio
+    third = [] # Lista de ganadores del tercer premio
+
+    First_prize,Second_prize,Thire_prize = lottery()
+
+    while i < 3:
+        number = random.randint(0,100) # Genera aleatoriamente un número ganador
+        if number in First_prize: # En la lista de primeros premios
+            first_count += 1
+            first.append(number)
+            First_prize.remove(number)
+            print("Felicitaciones, ganó el primer premio por {} enésima vez. El número ganador es: {}".format(first_count,number))
+        elif number in Second_prize: # En la lista del segundo premio
+            second_count += 1
+            second.append(number)
+            Second_prize.remove(number)
+            print("Felicitaciones, ganó el segundo premio por {} enésima vez. El número ganador es: {}".format(second_count,number))
+        elif number in Thire_prize: # En la lista del segundo premio
+            third_count += 1
+            third.append(number)
+            Thire_prize.remove(number)
+            print("Felicitaciones, ganó el tercer premio por {} enésima vez. El número ganador es: {}".format(third_count,number))
+        
+        i += 1
+    print('Número ganador del primer premio:',first)
+    print('Número ganador del segundo premio:',second)
+    print('Número ganador del tercer premio:',third)
+    key = input('La lotería terminó, ingrese "sí" para comenzar una nueva ronda de lotería:')
+    if key == 'Sí':
+        return main()
+    else:
+        print('juego terminado')
+
+
+if __name__ == "__main__":
+    main()
